@@ -21,4 +21,7 @@ export class Result {
 
   @Column()
   loserScore: number;
+
+  @Column()
+  tournamentId: number;
 }

@@ -1,6 +1,10 @@
-import { IsString } from 'class-validator';
+import { IsString, IsArray, IsOptional } from 'class-validator';
 
 export class CreatePlayerDto {
   @IsString()
-  readonly name: string;
+  name: string;
+
+  @IsArray()
+  @IsOptional()
+  tournaments?: string[];
 }

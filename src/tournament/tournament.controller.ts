@@ -1,34 +1,45 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { TournamentService } from './tournament.service';
-import { CreateTournamentDto } from './dto/create-tournament.dto';
-import { UpdateTournamentDto } from './dto/update-tournament.dto';
+import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
+import { TournamentsService } from './tournament.service';
+import { Tournament } from './entities/tournament.entity';
 
-@Controller('tournament')
-export class TournamentController {
-  constructor(private readonly tournamentService: TournamentService) {}
+@Controller('tournaments')
+export class TournamentsController {
+  constructor(private readonly tournamentsService: TournamentsService) {}
 
   @Post()
-  create(@Body() createTournamentDto: CreateTournamentDto) {
-    return this.tournamentService.create(createTournamentDto);
+  create(@Body() createTournamentDto: Tournament) {
+    return this.tournamentsService.create(createTournamentDto);
   }
 
   @Get()
   findAll() {
-    return this.tournamentService.findAll();
+    return this.tournamentsService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.tournamentService.findOne(+id);
+  findOne(@Param('id') id: number) {
+    return this.tournamentsService.findOne(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTournamentDto: UpdateTournamentDto) {
-    return this.tournamentService.update(+id, updateTournamentDto);
+  @Put(':id')
+  update(@Param('id') id: number, @Body() updateTournamentDto: Tournament) {
+    return this.tournamentsService.update(id, updateTournamentDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.tournamentService.remove(+id);
+  remove(@Param('id') id: number) {
+    return this.tournamentsService.remove(id);
+  }
+
+
+  @Post(':id/assign-competition')
+  async assignCompetitionRandomly(@Param('id') id: number) {
+    try {
+      await this.tournamentsService.assignCompetitionRandomly(id);
+      return { message: 'Successfully randomly assigned competition.' };
+    } catch (error) {
+      return { message: 'Error when randomly assigning the competition.', error: error.message };
+    }
   }
 }
+

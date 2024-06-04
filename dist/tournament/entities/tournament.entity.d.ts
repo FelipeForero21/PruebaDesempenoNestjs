@@ -3,5 +3,4 @@ export declare class Tournament {
     id: number;
     name: string;
     players: Player[];
-    winnerId: number;
 }

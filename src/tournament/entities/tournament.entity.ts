@@ -9,10 +9,7 @@ export class Tournament {
   @Column()
   name: string;
 
-  @ManyToMany(() => Player)
+  @ManyToMany(() => Player, player => player.tournaments)
   @JoinTable()
   players: Player[];
-
-  @Column({ nullable: true })
-  winnerId: number;
 }

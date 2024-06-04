@@ -24,14 +24,10 @@ __decorate([
     __metadata("design:type", String)
 ], Tournament.prototype, "name", void 0);
 __decorate([
-    (0, typeorm_1.ManyToMany)(() => player_entity_1.Player),
+    (0, typeorm_1.ManyToMany)(() => player_entity_1.Player, player => player.tournaments),
     (0, typeorm_1.JoinTable)(),
     __metadata("design:type", Array)
 ], Tournament.prototype, "players", void 0);
-__decorate([
-    (0, typeorm_1.Column)({ nullable: true }),
-    __metadata("design:type", Number)
-], Tournament.prototype, "winnerId", void 0);
 exports.Tournament = Tournament = __decorate([
     (0, typeorm_1.Entity)()
 ], Tournament);

@@ -2,17 +2,17 @@ import { IsInt } from 'class-validator';
 
 export class CreateResultDto {
   @IsInt()
-  readonly tournamentId: number;
+  tournamentId: number;
 
   @IsInt()
-  readonly winnerId: number;
+  winnerId: number;
 
   @IsInt()
-  readonly loserId: number;
+  loserId: number;
 
   @IsInt()
-  readonly winnerScore: number;
+  winnerScore: number;
 
   @IsInt()
-  readonly loserScore: number;
+  loserScore: number;
 }

@@ -1,12 +1,18 @@
-import { TournamentService } from './tournament.service';
-import { CreateTournamentDto } from './dto/create-tournament.dto';
-import { UpdateTournamentDto } from './dto/update-tournament.dto';
-export declare class TournamentController {
-    private readonly tournamentService;
-    constructor(tournamentService: TournamentService);
-    create(createTournamentDto: CreateTournamentDto): string;
-    findAll(): string;
-    findOne(id: string): string;
-    update(id: string, updateTournamentDto: UpdateTournamentDto): string;
-    remove(id: string): string;
+import { TournamentsService } from './tournament.service';
+import { Tournament } from './entities/tournament.entity';
+export declare class TournamentsController {
+    private readonly tournamentsService;
+    constructor(tournamentsService: TournamentsService);
+    create(createTournamentDto: Tournament): Promise<Tournament>;
+    findAll(): Promise<Tournament[]>;
+    findOne(id: number): Promise<Tournament>;
+    update(id: number, updateTournamentDto: Tournament): Promise<Tournament>;
+    remove(id: number): Promise<void>;
+    assignCompetitionRandomly(id: number): Promise<{
+        message: string;
+        error?: undefined;
+    } | {
+        message: string;
+        error: any;
+    }>;
 }

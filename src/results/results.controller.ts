@@ -1,14 +1,14 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, Put } from '@nestjs/common';
+import { Result } from './entities/result.entity';
 import { ResultsService } from './results.service';
-import { CreateResultDto } from './dto/create-result.dto';
-import { UpdateResultDto } from './dto/update-result.dto';
+
 
 @Controller('results')
 export class ResultsController {
   constructor(private readonly resultsService: ResultsService) {}
 
   @Post()
-  create(@Body() createResultDto: CreateResultDto) {
+  create(@Body() createResultDto: Result) {
     return this.resultsService.create(createResultDto);
   }
 
@@ -18,17 +18,18 @@ export class ResultsController {
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.resultsService.findOne(+id);
+  findOne(@Param('id') id: number) {
+    return this.resultsService.findOne(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateResultDto: UpdateResultDto) {
-    return this.resultsService.update(+id, updateResultDto);
+  @Put(':id')
+  update(@Param('id') id: number, @Body() updateResultDto: Result) {
+    return this.resultsService.update(id, updateResultDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.resultsService.remove(+id);
+  remove(@Param('id') id: number) {
+    return this.resultsService.remove(id);
   }
 }
+

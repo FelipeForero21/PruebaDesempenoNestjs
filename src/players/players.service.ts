@@ -1,26 +1,75 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Player } from 'src/players/entities/player.entity';
+import { Tournament } from 'src/tournament/entities/tournament.entity';
 import { CreatePlayerDto } from './dto/create-player.dto';
 import { UpdatePlayerDto } from './dto/update-player.dto';
 
 @Injectable()
 export class PlayersService {
-  create(createPlayerDto: CreatePlayerDto) {
-    return 'This action adds a new player';
+  constructor(
+    @InjectRepository(Player)
+    private readonly playerRepository: Repository<Player>,
+    @InjectRepository(Tournament)
+    private readonly tournamentRepository: Repository<Tournament>,
+  ) {}
+
+  private async convertTournaments(tournamentNames: string[]): Promise<Tournament[]> {
+    return Promise.all(
+      tournamentNames.map(async (name) => {
+        let tournament = await this.tournamentRepository.findOne({ where: { name } });
+        if (!tournament) {
+          tournament = this.tournamentRepository.create({ name });
+          tournament = await this.tournamentRepository.save(tournament);
+        }
+        return tournament;
+      }),
+    );
   }
 
-  findAll() {
-    return `This action returns all players`;
+  async create(createPlayerDto: CreatePlayerDto): Promise<Player> {
+    const tournaments = createPlayerDto.tournaments
+      ? await this.convertTournaments(createPlayerDto.tournaments)
+      : [];
+
+    const player = this.playerRepository.create({
+      name: createPlayerDto.name,
+      tournaments,
+    });
+
+    return await this.playerRepository.save(player);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} player`;
+  async findAll(): Promise<Player[]> {
+    return await this.playerRepository.find();
   }
 
-  update(id: number, updatePlayerDto: UpdatePlayerDto) {
-    return `This action updates a #${id} player`;
+  async findOne(id: number): Promise<Player> {
+    return await this.playerRepository.findOne({ where: { id } });
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} player`;
+  async update(id: number, updatePlayerDto: UpdatePlayerDto): Promise<Player> {
+    const existingPlayer = await this.findOne(id);
+    if (!existingPlayer) {
+      throw new Error('Player not found');
+    }
+
+    const tournaments = updatePlayerDto.tournaments
+      ? await this.convertTournaments(updatePlayerDto.tournaments)
+      : existingPlayer.tournaments;
+
+    const updatedPlayer = this.playerRepository.create({
+      ...existingPlayer,
+      ...updatePlayerDto,
+      tournaments,
+    });
+
+    await this.playerRepository.save(updatedPlayer);
+    return this.findOne(id);
+  }
+
+  async remove(id: number): Promise<void> {
+    await this.playerRepository.softDelete(id);
   }
 }

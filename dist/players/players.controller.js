@@ -15,8 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.PlayersController = void 0;
 const common_1 = require("@nestjs/common");
 const players_service_1 = require("./players.service");
-const create_player_dto_1 = require("./dto/create-player.dto");
 const update_player_dto_1 = require("./dto/update-player.dto");
+const create_player_dto_1 = require("./dto/create-player.dto");
 let PlayersController = class PlayersController {
     constructor(playersService) {
         this.playersService = playersService;

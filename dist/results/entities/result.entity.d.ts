@@ -7,4 +7,5 @@ export declare class Result {
     loser: Player;
     winnerScore: number;
     loserScore: number;
+    tournamentId: number;
 }

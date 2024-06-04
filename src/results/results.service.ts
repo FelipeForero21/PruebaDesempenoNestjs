@@ -1,26 +1,35 @@
 import { Injectable } from '@nestjs/common';
-import { CreateResultDto } from './dto/create-result.dto';
-import { UpdateResultDto } from './dto/update-result.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Result } from './entities/result.entity';
 
 @Injectable()
 export class ResultsService {
-  create(createResultDto: CreateResultDto) {
-    return 'This action adds a new result';
+  constructor(
+    @InjectRepository(Result)
+    private readonly resultRepository: Repository<Result>,
+  ) {}
+
+  async create(resultData: Result): Promise<Result> {
+    const result = this.resultRepository.create(resultData);
+    return await this.resultRepository.save(result);
   }
 
-  findAll() {
-    return `This action returns all results`;
+  async findAll(): Promise<Result[]> {
+    return await this.resultRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} result`;
+  async findOne(id: number): Promise<Result> {
+    return await this.resultRepository.findOne({ where: { id }});
+  } 
+
+
+  async update(id: number, resultData: Result): Promise<Result> {
+    await this.resultRepository.update(id, resultData);
+    return this.findOne(id);
   }
 
-  update(id: number, updateResultDto: UpdateResultDto) {
-    return `This action updates a #${id} result`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} result`;
+  async remove(id: number): Promise<void> {
+    await this.resultRepository.delete(id);
   }
 }

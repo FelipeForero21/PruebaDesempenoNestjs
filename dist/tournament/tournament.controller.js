@@ -12,69 +12,84 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TournamentController = void 0;
+exports.TournamentsController = void 0;
 const common_1 = require("@nestjs/common");
 const tournament_service_1 = require("./tournament.service");
-const create_tournament_dto_1 = require("./dto/create-tournament.dto");
-const update_tournament_dto_1 = require("./dto/update-tournament.dto");
-let TournamentController = class TournamentController {
-    constructor(tournamentService) {
-        this.tournamentService = tournamentService;
+const tournament_entity_1 = require("./entities/tournament.entity");
+let TournamentsController = class TournamentsController {
+    constructor(tournamentsService) {
+        this.tournamentsService = tournamentsService;
     }
     create(createTournamentDto) {
-        return this.tournamentService.create(createTournamentDto);
+        return this.tournamentsService.create(createTournamentDto);
     }
     findAll() {
-        return this.tournamentService.findAll();
+        return this.tournamentsService.findAll();
     }
     findOne(id) {
-        return this.tournamentService.findOne(+id);
+        return this.tournamentsService.findOne(id);
     }
     update(id, updateTournamentDto) {
-        return this.tournamentService.update(+id, updateTournamentDto);
+        return this.tournamentsService.update(id, updateTournamentDto);
     }
     remove(id) {
-        return this.tournamentService.remove(+id);
+        return this.tournamentsService.remove(id);
+    }
+    async assignCompetitionRandomly(id) {
+        try {
+            await this.tournamentsService.assignCompetitionRandomly(id);
+            return { message: 'Successfully randomly assigned competition.' };
+        }
+        catch (error) {
+            return { message: 'Error when randomly assigning the competition.', error: error.message };
+        }
     }
 };
-exports.TournamentController = TournamentController;
+exports.TournamentsController = TournamentsController;
 __decorate([
     (0, common_1.Post)(),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [create_tournament_dto_1.CreateTournamentDto]),
+    __metadata("design:paramtypes", [tournament_entity_1.Tournament]),
     __metadata("design:returntype", void 0)
-], TournamentController.prototype, "create", null);
+], TournamentsController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)(),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
-], TournamentController.prototype, "findAll", null);
+], TournamentsController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Get)(':id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", void 0)
-], TournamentController.prototype, "findOne", null);
+], TournamentsController.prototype, "findOne", null);
 __decorate([
-    (0, common_1.Patch)(':id'),
+    (0, common_1.Put)(':id'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String, update_tournament_dto_1.UpdateTournamentDto]),
+    __metadata("design:paramtypes", [Number, tournament_entity_1.Tournament]),
     __metadata("design:returntype", void 0)
-], TournamentController.prototype, "update", null);
+], TournamentsController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)(':id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
+    __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", void 0)
-], TournamentController.prototype, "remove", null);
-exports.TournamentController = TournamentController = __decorate([
-    (0, common_1.Controller)('tournament'),
-    __metadata("design:paramtypes", [tournament_service_1.TournamentService])
-], TournamentController);
+], TournamentsController.prototype, "remove", null);
+__decorate([
+    (0, common_1.Post)(':id/assign-competition'),
+    __param(0, (0, common_1.Param)('id')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number]),
+    __metadata("design:returntype", Promise)
+], TournamentsController.prototype, "assignCompetitionRandomly", null);
+exports.TournamentsController = TournamentsController = __decorate([
+    (0, common_1.Controller)('tournaments'),
+    __metadata("design:paramtypes", [tournament_service_1.TournamentsService])
+], TournamentsController);
 //# sourceMappingURL=tournament.controller.js.map

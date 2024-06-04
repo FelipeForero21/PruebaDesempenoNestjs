@@ -40,6 +40,10 @@ __decorate([
     (0, typeorm_1.Column)(),
     __metadata("design:type", Number)
 ], Result.prototype, "loserScore", void 0);
+__decorate([
+    (0, typeorm_1.Column)(),
+    __metadata("design:type", Number)
+], Result.prototype, "tournamentId", void 0);
 exports.Result = Result = __decorate([
     (0, typeorm_1.Entity)()
 ], Result);
