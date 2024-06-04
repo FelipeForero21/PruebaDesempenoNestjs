@@ -65,8 +65,12 @@ let PlayersService = class PlayersService {
         await this.playerRepository.save(updatedPlayer);
         return this.findOne(id);
     }
-    async remove(id) {
-        await this.playerRepository.softDelete(id);
+    async softDelete(id) {
+        const result = await this.playerRepository.update({ id }, { deletedAt: new Date() });
+        if (result.affected === 0) {
+            throw new Error('Player not found');
+        }
+        return { message: 'Player deleted successfully' };
     }
 };
 exports.PlayersService = PlayersService;

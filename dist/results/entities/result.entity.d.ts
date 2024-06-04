@@ -8,4 +8,5 @@ export declare class Result {
     winnerScore: number;
     loserScore: number;
     tournamentId: number;
+    deletedAt: Date;
 }

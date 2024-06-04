@@ -3,4 +3,5 @@ export declare class Player {
     id: number;
     name: string;
     tournaments: Tournament[];
+    deletedAt: Date;
 }

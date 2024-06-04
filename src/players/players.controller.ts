@@ -7,7 +7,7 @@ import { CreatePlayerDto } from './dto/create-player.dto';
 export class PlayersController {
   constructor(private readonly playersService: PlayersService) {}
 
-  @Post()
+  @Post("/createNewPlayer")
   create(@Body() createPlayerDto: CreatePlayerDto) {
     return this.playersService.create(createPlayerDto);
   }
@@ -17,18 +17,15 @@ export class PlayersController {
     return this.playersService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.playersService.findOne(+id);
-  }
 
-  @Patch(':id')
+  @Patch('/UpdatePlayerOrTournament/:id')
   update(@Param('id') id: string, @Body() updatePlayerDto: UpdatePlayerDto) {
     return this.playersService.update(+id, updatePlayerDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.playersService.remove(+id);
+  @Delete('/deletePlayer/:id')
+  async softDelete(@Param('id') id: string): Promise<{ message: string }> {
+    const response = await this.playersService.softDelete(+id);
+    return response;
   }
 }

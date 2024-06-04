@@ -12,5 +12,7 @@ export declare class PlayersService {
     findAll(): Promise<Player[]>;
     findOne(id: number): Promise<Player>;
     update(id: number, updatePlayerDto: UpdatePlayerDto): Promise<Player>;
-    remove(id: number): Promise<void>;
+    softDelete(id: number): Promise<{
+        message: string;
+    }>;
 }

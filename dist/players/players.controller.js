@@ -33,13 +33,14 @@ let PlayersController = class PlayersController {
     update(id, updatePlayerDto) {
         return this.playersService.update(+id, updatePlayerDto);
     }
-    remove(id) {
-        return this.playersService.remove(+id);
+    async softDelete(id) {
+        const response = await this.playersService.softDelete(+id);
+        return response;
     }
 };
 exports.PlayersController = PlayersController;
 __decorate([
-    (0, common_1.Post)(),
+    (0, common_1.Post)("/createNewPlayer"),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [create_player_dto_1.CreatePlayerDto]),
@@ -52,14 +53,14 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], PlayersController.prototype, "findAll", null);
 __decorate([
-    (0, common_1.Get)(':id'),
+    (0, common_1.Get)('/findOnePlayer/:id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", void 0)
 ], PlayersController.prototype, "findOne", null);
 __decorate([
-    (0, common_1.Patch)(':id'),
+    (0, common_1.Patch)('/UpdatePlayerOrTournament/:id'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -67,12 +68,12 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], PlayersController.prototype, "update", null);
 __decorate([
-    (0, common_1.Delete)(':id'),
+    (0, common_1.Delete)('/deletePlayer/:id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
-], PlayersController.prototype, "remove", null);
+    __metadata("design:returntype", Promise)
+], PlayersController.prototype, "softDelete", null);
 exports.PlayersController = PlayersController = __decorate([
     (0, common_1.Controller)('players'),
     __metadata("design:paramtypes", [players_service_1.PlayersService])

@@ -27,6 +27,10 @@ __decorate([
     (0, typeorm_1.ManyToMany)(() => tournament_entity_1.Tournament, tournament => tournament.players),
     __metadata("design:type", Array)
 ], Player.prototype, "tournaments", void 0);
+__decorate([
+    (0, typeorm_1.DeleteDateColumn)({ nullable: true }),
+    __metadata("design:type", Date)
+], Player.prototype, "deletedAt", void 0);
 exports.Player = Player = __decorate([
     (0, typeorm_1.Entity)()
 ], Player);

@@ -69,7 +69,13 @@ export class PlayersService {
     return this.findOne(id);
   }
 
-  async remove(id: number): Promise<void> {
-    await this.playerRepository.softDelete(id);
+async softDelete(id: number): Promise<{ message: string }> {
+  const result = await this.playerRepository.update({ id }, { deletedAt: new Date() });
+
+  if (result.affected === 0) {
+    throw new Error('Player not found');
   }
+
+  return { message: 'Player deleted successfully' };
+}
 }

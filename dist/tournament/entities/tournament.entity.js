@@ -28,6 +28,10 @@ __decorate([
     (0, typeorm_1.JoinTable)(),
     __metadata("design:type", Array)
 ], Tournament.prototype, "players", void 0);
+__decorate([
+    (0, typeorm_1.DeleteDateColumn)({ nullable: true }),
+    __metadata("design:type", Date)
+], Tournament.prototype, "deletedAt", void 0);
 exports.Tournament = Tournament = __decorate([
     (0, typeorm_1.Entity)()
 ], Tournament);

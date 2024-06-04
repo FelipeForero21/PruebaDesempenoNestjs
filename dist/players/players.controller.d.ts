@@ -8,5 +8,7 @@ export declare class PlayersController {
     findAll(): Promise<import("./entities/player.entity").Player[]>;
     findOne(id: string): Promise<import("./entities/player.entity").Player>;
     update(id: string, updatePlayerDto: UpdatePlayerDto): Promise<import("./entities/player.entity").Player>;
-    remove(id: string): Promise<void>;
+    softDelete(id: string): Promise<{
+        message: string;
+    }>;
 }
