@@ -52,7 +52,7 @@ let PlayersService = class PlayersService {
     async update(id, updatePlayerDto) {
         const existingPlayer = await this.findOne(id);
         if (!existingPlayer) {
-            throw new Error('Player not found');
+            throw new common_1.NotFoundException('Player not found');
         }
         const tournaments = updatePlayerDto.tournaments
             ? await this.convertTournaments(updatePlayerDto.tournaments)
@@ -71,6 +71,16 @@ let PlayersService = class PlayersService {
             throw new Error('Player not found');
         }
         return { message: 'Player deleted successfully' };
+    }
+    async addPlayerToTournament(playerId, tournamentId) {
+        const player = await this.playerRepository.findOne({ where: { id: playerId } });
+        const tournament = await this.tournamentRepository.findOne({ where: { id: tournamentId } });
+        if (!tournament.players) {
+            tournament.players = [];
+        }
+        tournament.players.push(player);
+        await this.tournamentRepository.save(tournament);
+        return player;
     }
 };
 exports.PlayersService = PlayersService;

@@ -6,9 +6,12 @@ export declare class PlayersController {
     constructor(playersService: PlayersService);
     create(createPlayerDto: CreatePlayerDto): Promise<import("./entities/player.entity").Player>;
     findAll(): Promise<import("./entities/player.entity").Player[]>;
-    findOne(id: string): Promise<import("./entities/player.entity").Player>;
     update(id: string, updatePlayerDto: UpdatePlayerDto): Promise<import("./entities/player.entity").Player>;
     softDelete(id: string): Promise<{
         message: string;
+    }>;
+    addPlayerToTournament(playerId: number, tournamentId: number): Promise<{
+        message: string;
+        player: import("./entities/player.entity").Player;
     }>;
 }

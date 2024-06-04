@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Player } from 'src/players/entities/player.entity';
@@ -33,6 +33,7 @@ export class PlayersService {
       ? await this.convertTournaments(createPlayerDto.tournaments)
       : [];
 
+
     const player = this.playerRepository.create({
       name: createPlayerDto.name,
       tournaments,
@@ -52,7 +53,7 @@ export class PlayersService {
   async update(id: number, updatePlayerDto: UpdatePlayerDto): Promise<Player> {
     const existingPlayer = await this.findOne(id);
     if (!existingPlayer) {
-      throw new Error('Player not found');
+      throw new NotFoundException('Player not found');
     }
 
     const tournaments = updatePlayerDto.tournaments
@@ -77,5 +78,20 @@ async softDelete(id: number): Promise<{ message: string }> {
   }
 
   return { message: 'Player deleted successfully' };
+}
+
+async addPlayerToTournament(playerId: number, tournamentId: number): Promise<Player> {
+  const player = await this.playerRepository.findOne({ where: { id: playerId } });
+  const tournament = await this.tournamentRepository.findOne({ where: { id: tournamentId } });
+
+  if (!tournament.players) {
+    tournament.players = []; 
+  }
+  tournament.players.push(player);
+  
+
+  await this.tournamentRepository.save(tournament);
+
+  return player;
 }
 }

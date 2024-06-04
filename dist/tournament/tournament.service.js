@@ -41,7 +41,11 @@ let TournamentsService = class TournamentsService {
         return this.findOne(id);
     }
     async remove(id) {
-        await this.tournamentsRepository.softDelete(id);
+        const result = await this.tournamentsRepository.softDelete(id);
+        if (result.affected === 0) {
+            throw new Error('Tournament not found');
+        }
+        return { message: 'Tournament deleted successfully' };
     }
     async assignCompetitionRandomly(tournamentId) {
         const tournament = await this.findOne(tournamentId);

@@ -27,15 +27,27 @@ let PlayersController = class PlayersController {
     findAll() {
         return this.playersService.findAll();
     }
-    findOne(id) {
-        return this.playersService.findOne(+id);
-    }
-    update(id, updatePlayerDto) {
-        return this.playersService.update(+id, updatePlayerDto);
+    async update(id, updatePlayerDto) {
+        try {
+            const updatedPlayer = await this.playersService.update(+id, updatePlayerDto);
+            return updatedPlayer;
+        }
+        catch (error) {
+            if (error instanceof common_1.NotFoundException) {
+                throw new common_1.NotFoundException(error.message);
+            }
+            else {
+                throw error;
+            }
+        }
     }
     async softDelete(id) {
         const response = await this.playersService.softDelete(+id);
         return response;
+    }
+    async addPlayerToTournament(playerId, tournamentId) {
+        const player = await this.playersService.addPlayerToTournament(playerId, tournamentId);
+        return { message: 'Player successfully added to the tournament', player };
     }
 };
 exports.PlayersController = PlayersController;
@@ -47,25 +59,18 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], PlayersController.prototype, "create", null);
 __decorate([
-    (0, common_1.Get)(),
+    (0, common_1.Get)('/allPlayer'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
 ], PlayersController.prototype, "findAll", null);
 __decorate([
-    (0, common_1.Get)('/findOnePlayer/:id'),
-    __param(0, (0, common_1.Param)('id')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [String]),
-    __metadata("design:returntype", void 0)
-], PlayersController.prototype, "findOne", null);
-__decorate([
-    (0, common_1.Patch)('/UpdatePlayerOrTournament/:id'),
+    (0, common_1.Patch)('/updatePlayer/:id'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [String, update_player_dto_1.UpdatePlayerDto]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], PlayersController.prototype, "update", null);
 __decorate([
     (0, common_1.Delete)('/deletePlayer/:id'),
@@ -74,6 +79,14 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], PlayersController.prototype, "softDelete", null);
+__decorate([
+    (0, common_1.Post)(':id/addPlayerToTournament/:tournamentId'),
+    __param(0, (0, common_1.Param)('id')),
+    __param(1, (0, common_1.Param)('tournamentId')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Number]),
+    __metadata("design:returntype", Promise)
+], PlayersController.prototype, "addPlayerToTournament", null);
 exports.PlayersController = PlayersController = __decorate([
     (0, common_1.Controller)('players'),
     __metadata("design:paramtypes", [players_service_1.PlayersService])

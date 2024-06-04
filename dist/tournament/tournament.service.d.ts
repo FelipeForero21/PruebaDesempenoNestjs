@@ -11,7 +11,9 @@ export declare class TournamentsService {
     findAll(): Promise<Tournament[]>;
     findOne(id: number): Promise<Tournament>;
     update(id: number, tournamentData: Tournament): Promise<Tournament>;
-    remove(id: number): Promise<void>;
+    remove(id: number): Promise<{
+        message: string;
+    }>;
     assignCompetitionRandomly(tournamentId: number): Promise<void>;
     private shuffleArray;
     private generateMatchups;

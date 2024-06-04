@@ -47,14 +47,14 @@ let TournamentsController = class TournamentsController {
 };
 exports.TournamentsController = TournamentsController;
 __decorate([
-    (0, common_1.Post)(),
+    (0, common_1.Post)('createNewTournament'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [tournament_entity_1.Tournament]),
     __metadata("design:returntype", void 0)
 ], TournamentsController.prototype, "create", null);
 __decorate([
-    (0, common_1.Get)(),
+    (0, common_1.Get)('allTournaments'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
     __metadata("design:returntype", void 0)
@@ -67,7 +67,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], TournamentsController.prototype, "findOne", null);
 __decorate([
-    (0, common_1.Put)(':id'),
+    (0, common_1.Put)('/UpdateTournament/:id'),
     __param(0, (0, common_1.Param)('id')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
@@ -75,7 +75,7 @@ __decorate([
     __metadata("design:returntype", void 0)
 ], TournamentsController.prototype, "update", null);
 __decorate([
-    (0, common_1.Delete)(':id'),
+    (0, common_1.Delete)('/deleteTournament/:id'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),

@@ -6,12 +6,12 @@ import { Tournament } from './entities/tournament.entity';
 export class TournamentsController {
   constructor(private readonly tournamentsService: TournamentsService) {}
 
-  @Post()
+  @Post('createNewTournament')
   create(@Body() createTournamentDto: Tournament) {
     return this.tournamentsService.create(createTournamentDto);
   }
 
-  @Get()
+  @Get('allTournaments')
   findAll() {
     return this.tournamentsService.findAll();
   }
@@ -21,16 +21,15 @@ export class TournamentsController {
     return this.tournamentsService.findOne(id);
   }
 
-  @Put(':id')
+  @Put('/UpdateTournament/:id')
   update(@Param('id') id: number, @Body() updateTournamentDto: Tournament) {
     return this.tournamentsService.update(id, updateTournamentDto);
   }
 
-  @Delete(':id')
+  @Delete('/deleteTournament/:id')
   remove(@Param('id') id: number) {
     return this.tournamentsService.remove(id);
   }
-
 
   @Post(':id/assign-competition')
   async assignCompetitionRandomly(@Param('id') id: number) {

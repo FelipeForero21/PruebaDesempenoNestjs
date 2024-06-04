@@ -15,4 +15,5 @@ export declare class PlayersService {
     softDelete(id: number): Promise<{
         message: string;
     }>;
+    addPlayerToTournament(playerId: number, tournamentId: number): Promise<Player>;
 }

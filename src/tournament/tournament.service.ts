@@ -33,9 +33,17 @@ export class TournamentsService {
     return this.findOne(id);
   }
 
-  async remove(id: number): Promise<void> {
-    await this.tournamentsRepository.softDelete(id);
-  }
+
+
+  async remove(id: number): Promise<{ message: string }> {
+      const result = await this.tournamentsRepository.softDelete(id);
+  
+      if (result.affected === 0) {
+        throw new Error('Tournament not found');
+      }
+      return { message: 'Tournament deleted successfully' };
+    }
+
   async assignCompetitionRandomly(tournamentId: number): Promise<void> {
     const tournament = await this.findOne(tournamentId);
     const players = await this.playersService.findAll();

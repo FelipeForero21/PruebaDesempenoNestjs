@@ -7,7 +7,9 @@ export declare class TournamentsController {
     findAll(): Promise<Tournament[]>;
     findOne(id: number): Promise<Tournament>;
     update(id: number, updateTournamentDto: Tournament): Promise<Tournament>;
-    remove(id: number): Promise<void>;
+    remove(id: number): Promise<{
+        message: string;
+    }>;
     assignCompetitionRandomly(id: number): Promise<{
         message: string;
         error?: undefined;
