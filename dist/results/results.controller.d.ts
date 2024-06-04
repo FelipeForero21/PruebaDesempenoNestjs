@@ -8,11 +8,4 @@ export declare class ResultsController {
         loserScore: number;
     }): Promise<Result>;
     getResults(tournamentId: number, minScore: number, sort?: 'asc' | 'desc', page?: number, limit?: number): Promise<Result[]>;
-    assignCompetitionRandomly(id: number): Promise<{
-        message: string;
-        error?: undefined;
-    } | {
-        message: string;
-        error: any;
-    }>;
 }

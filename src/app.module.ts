@@ -1,10 +1,11 @@
 import { Module, ValidationPipe } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { APP_PIPE } from '@nestjs/core';
+import { APP_GUARD, APP_PIPE } from '@nestjs/core';
 import { TournamentModule } from './tournament/tournament.module';
 import { PlayersModule } from './players/players.module';
 import { ResultsModule } from './results/results.module';
+import { ApiKeyGuard } from './common/guards/api-key/api-key.guard';
 
 @Module({
   imports: [
@@ -34,6 +35,10 @@ import { ResultsModule } from './results/results.module';
     {
       provide: APP_PIPE,
       useClass: ValidationPipe,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: ApiKeyGuard,
     },
   ],
 })

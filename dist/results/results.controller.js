@@ -30,16 +30,6 @@ let ResultsController = class ResultsController {
     async getResults(tournamentId, minScore, sort = 'asc', page = 0, limit = 10) {
         return this.resultsService.getResults(tournamentId, minScore, sort, page, limit);
     }
-    async assignCompetitionRandomly(id) {
-        try {
-            await this.resultsService.assignCompetitionRandomly(id);
-            return { message: 'Successfully randomly assigned competition.' };
-        }
-        catch (error) {
-            console.error(error);
-            return { message: 'Error when randomly assigning the competition.', error: error.message };
-        }
-    }
 };
 exports.ResultsController = ResultsController;
 __decorate([
@@ -61,13 +51,6 @@ __decorate([
     __metadata("design:paramtypes", [Number, Number, String, Number, Number]),
     __metadata("design:returntype", Promise)
 ], ResultsController.prototype, "getResults", null);
-__decorate([
-    (0, common_1.Post)(':id/assign-competition'),
-    __param(0, (0, common_1.Param)('id')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
-    __metadata("design:returntype", Promise)
-], ResultsController.prototype, "assignCompetitionRandomly", null);
 exports.ResultsController = ResultsController = __decorate([
     (0, common_1.Controller)('results'),
     __metadata("design:paramtypes", [results_service_1.ResultsService])

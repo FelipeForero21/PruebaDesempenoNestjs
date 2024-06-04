@@ -14,6 +14,7 @@ const core_1 = require("@nestjs/core");
 const tournament_module_1 = require("./tournament/tournament.module");
 const players_module_1 = require("./players/players.module");
 const results_module_1 = require("./results/results.module");
+const api_key_guard_1 = require("./common/guards/api-key/api-key.guard");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -46,6 +47,10 @@ exports.AppModule = AppModule = __decorate([
             {
                 provide: core_1.APP_PIPE,
                 useClass: common_1.ValidationPipe,
+            },
+            {
+                provide: core_1.APP_GUARD,
+                useClass: api_key_guard_1.ApiKeyGuard,
             },
         ],
     })
