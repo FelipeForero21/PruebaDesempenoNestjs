@@ -2,6 +2,9 @@ import { Module, ValidationPipe } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { APP_PIPE } from '@nestjs/core';
+import { TournamentModule } from './tournament/tournament.module';
+import { PlayersModule } from './players/players.module';
+import { ResultsModule } from './results/results.module';
 
 @Module({
   imports: [
@@ -22,6 +25,9 @@ import { APP_PIPE } from '@nestjs/core';
         ssl: true,
       },
     }),
+    TournamentModule,
+    PlayersModule,
+    ResultsModule,
   ],
   controllers: [],
   providers: [
