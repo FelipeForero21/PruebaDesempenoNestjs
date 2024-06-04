@@ -1,5 +1,5 @@
+import { Player } from 'src/players/entities/player.entity';
 import { Entity, Column, PrimaryGeneratedColumn, ManyToMany, JoinTable } from 'typeorm';
-import { Player } from '../players/player.entity';
 
 @Entity()
 export class Tournament {

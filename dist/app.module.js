@@ -11,6 +11,9 @@ const common_1 = require("@nestjs/common");
 const config_1 = require("@nestjs/config");
 const typeorm_1 = require("@nestjs/typeorm");
 const core_1 = require("@nestjs/core");
+const tournament_module_1 = require("./tournament/tournament.module");
+const players_module_1 = require("./players/players.module");
+const results_module_1 = require("./results/results.module");
 let AppModule = class AppModule {
 };
 exports.AppModule = AppModule;
@@ -34,6 +37,9 @@ exports.AppModule = AppModule = __decorate([
                     ssl: true,
                 },
             }),
+            tournament_module_1.TournamentModule,
+            players_module_1.PlayersModule,
+            results_module_1.ResultsModule,
         ],
         controllers: [],
         providers: [
