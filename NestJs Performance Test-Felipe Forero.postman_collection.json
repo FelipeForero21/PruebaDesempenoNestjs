@@ -1,0 +1,346 @@
+{
+	"info": {
+		"_postman_id": "aca7a477-5895-4afb-92a3-d1b1ba5437f7",
+		"name": "NestJs Performance Test/Felipe Forero",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "33509084",
+		"_collection_link": "https://blue-flare-210817.postman.co/workspace/My-Workspace~931d3d74-1254-45cc-8136-433563407235/collection/33509084-aca7a477-5895-4afb-92a3-d1b1ba5437f7?action=share&source=collection_link&creator=33509084"
+	},
+	"item": [
+		{
+			"name": "Players",
+			"item": [
+				{
+					"name": "Create New Player",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\"name\": \"Mbappe\"}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3000/players/createNewPlayer"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Players",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "felipeforero",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": "http://localhost:3000/players/allPlayer"
+					},
+					"response": []
+				},
+				{
+					"name": "Update Player",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "felipeforero",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Name Player\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3000/players/UpdatePlayer/2"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Player",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "felipeforero",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": "http://localhost:3000/players/deletePlayer/{id}"
+					},
+					"response": []
+				},
+				{
+					"name": "Add players to the tournament",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "felipeforero",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/players/{idPlayer}/addPlayerToTournament/{idTournement}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"players",
+								"{idPlayer}",
+								"addPlayerToTournament",
+								"{idTournement}"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Tournaments",
+			"item": [
+				{
+					"name": "Create New Tournament",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "felipeforero",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Torneo de Universidades\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3000/tournaments/createNewTournament"
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Tournament",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "felipeforero",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/tournaments/allTournaments",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"tournaments",
+								"allTournaments"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Tournament",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "felipeforero",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"Torneo De viejos\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3000/tournaments/UpdateTournament/{idTournament}"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Tournaments",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "felipeforero",
+								"type": "text"
+							}
+						],
+						"url": "http://localhost:3000/tournaments/deleteTournament/{IDTournaments}"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "RESULTS AND ASSIGNAMENT TOURNAMENT OF PLAYERS",
+			"item": [
+				{
+					"name": "ASSIGN TOURNAMENT RANDOMLY",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "felipeforero",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/results/1/assign-competition",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"results",
+								"1",
+								"assign-competition"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": "",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Score filter (>=), sort by scores and pagination",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "felipeforero",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://localhost:3000/results/1?minScore=0&sort=asc&page=0&limit=10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"results",
+								"1"
+							],
+							"query": [
+								{
+									"key": "minScore",
+									"value": "0"
+								},
+								{
+									"key": "sort",
+									"value": "asc"
+								},
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "limit",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "allocationOfResults/:tournamentId",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "x-api-key",
+								"value": "felipeforero",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"winnerScore\": 3,\n  \"loserScore\": 0\n}\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:3000/results/allocationOfResults/1"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
