@@ -279,7 +279,6 @@ Swagger documentation is available at `/api`.
 
 ## Project Structure
 
-```
 src/
 ├── common/
 │   └── guards/
@@ -313,4 +312,4 @@ src/
 │   └── tournament.service.ts
 ├── app.module.ts
 ├── main.ts
-```
+
