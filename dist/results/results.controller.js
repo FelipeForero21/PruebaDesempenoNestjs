@@ -21,14 +21,30 @@ let ResultsController = class ResultsController {
         this.resultsService = resultsService;
     }
     async createResult(tournamentId, resultData) {
-        const result = new result_entity_1.Result();
-        result.tournament = await this.resultsService.findOne(tournamentId);
-        result.winnerScore = resultData.winnerScore;
-        result.loserScore = resultData.loserScore;
-        return this.resultsService.create(result);
+        try {
+            const tournament = await this.resultsService.findOne(tournamentId);
+            if (!tournament) {
+                throw new common_1.NotFoundException('Tournament not found');
+            }
+            const result = new result_entity_1.Result();
+            result.tournament = tournament;
+            result.winnerScore = resultData.winnerScore;
+            result.loserScore = resultData.loserScore;
+            const newResult = await this.resultsService.create(result);
+            return { statusCode: common_1.HttpStatus.CREATED, message: 'Result created successfully', newResult };
+        }
+        catch (error) {
+            throw new common_1.HttpException('Failed to create result', common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     async getResults(tournamentId, minScore, sort = 'asc', page = 0, limit = 10) {
-        return this.resultsService.getResults(tournamentId, minScore, sort, page, limit);
+        try {
+            const results = await this.resultsService.getResults(tournamentId, minScore, sort, page, limit);
+            return { statusCode: common_1.HttpStatus.OK, results };
+        }
+        catch (error) {
+            throw new common_1.HttpException('Failed to fetch results', common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 };
 exports.ResultsController = ResultsController;

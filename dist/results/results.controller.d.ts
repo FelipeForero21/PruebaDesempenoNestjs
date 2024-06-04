@@ -1,3 +1,4 @@
+import { HttpStatus } from '@nestjs/common';
 import { ResultsService } from './results.service';
 import { Result } from './entities/result.entity';
 export declare class ResultsController {
@@ -6,6 +7,13 @@ export declare class ResultsController {
     createResult(tournamentId: number, resultData: {
         winnerScore: number;
         loserScore: number;
-    }): Promise<Result>;
-    getResults(tournamentId: number, minScore: number, sort?: 'asc' | 'desc', page?: number, limit?: number): Promise<Result[]>;
+    }): Promise<{
+        statusCode: HttpStatus;
+        message: string;
+        newResult: Result;
+    }>;
+    getResults(tournamentId: number, minScore: number, sort?: 'asc' | 'desc', page?: number, limit?: number): Promise<{
+        statusCode: HttpStatus;
+        results: Result[];
+    }>;
 }

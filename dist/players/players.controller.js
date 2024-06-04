@@ -21,48 +21,70 @@ let PlayersController = class PlayersController {
     constructor(playersService) {
         this.playersService = playersService;
     }
-    create(createPlayerDto) {
-        return this.playersService.create(createPlayerDto);
+    async create(createPlayerDto) {
+        try {
+            const newPlayer = await this.playersService.create(createPlayerDto);
+            return { statusCode: common_1.HttpStatus.CREATED, message: 'Player created successfully', newPlayer };
+        }
+        catch (error) {
+            throw new common_1.HttpException('Failed to create player', common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
-    findAll() {
-        return this.playersService.findAll();
+    async findAll() {
+        try {
+            const players = await this.playersService.findAll();
+            return { statusCode: common_1.HttpStatus.OK, players };
+        }
+        catch (error) {
+            throw new common_1.HttpException('Failed to fetch players', common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     async update(id, updatePlayerDto) {
         try {
             const updatedPlayer = await this.playersService.update(+id, updatePlayerDto);
-            return updatedPlayer;
+            return { statusCode: common_1.HttpStatus.OK, message: 'Player updated successfully', updatedPlayer };
         }
         catch (error) {
             if (error instanceof common_1.NotFoundException) {
-                throw new common_1.NotFoundException(error.message);
+                throw new common_1.NotFoundException('Player not found');
             }
             else {
-                throw error;
+                throw new common_1.HttpException('Failed to update player', common_1.HttpStatus.INTERNAL_SERVER_ERROR);
             }
         }
     }
     async softDelete(id) {
-        const response = await this.playersService.softDelete(+id);
-        return response;
+        try {
+            await this.playersService.softDelete(+id);
+            return { statusCode: common_1.HttpStatus.OK, message: 'Player deleted successfully' };
+        }
+        catch (error) {
+            throw new common_1.HttpException('Failed to delete player', common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     async addPlayerToTournament(playerId, tournamentId) {
-        const player = await this.playersService.addPlayerToTournament(playerId, tournamentId);
-        return { message: 'Player successfully added to the tournament', player };
+        try {
+            const player = await this.playersService.addPlayerToTournament(playerId, tournamentId);
+            return { statusCode: common_1.HttpStatus.OK, message: 'Player successfully added to the tournament', player };
+        }
+        catch (error) {
+            throw new common_1.HttpException('Failed to add player to tournament', common_1.HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 };
 exports.PlayersController = PlayersController;
 __decorate([
-    (0, common_1.Post)("/createNewPlayer"),
+    (0, common_1.Post)('/createNewPlayer'),
     __param(0, (0, common_1.Body)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [create_player_dto_1.CreatePlayerDto]),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], PlayersController.prototype, "create", null);
 __decorate([
     (0, common_1.Get)('/allPlayer'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
+    __metadata("design:returntype", Promise)
 ], PlayersController.prototype, "findAll", null);
 __decorate([
     (0, common_1.Patch)('/updatePlayer/:id'),
