@@ -14,64 +14,59 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ResultsController = void 0;
 const common_1 = require("@nestjs/common");
-const result_entity_1 = require("./entities/result.entity");
 const results_service_1 = require("./results.service");
+const result_entity_1 = require("./entities/result.entity");
 let ResultsController = class ResultsController {
     constructor(resultsService) {
         this.resultsService = resultsService;
     }
-    create(createResultDto) {
-        return this.resultsService.create(createResultDto);
+    async createResult(tournamentId, resultData) {
+        const result = new result_entity_1.Result();
+        result.tournament = await this.resultsService.findOne(tournamentId);
+        result.winnerScore = resultData.winnerScore;
+        result.loserScore = resultData.loserScore;
+        return this.resultsService.create(result);
     }
-    findAll() {
-        return this.resultsService.findAll();
+    async getResults(tournamentId, minScore, sort = 'asc', page = 0, limit = 10) {
+        return this.resultsService.getResults(tournamentId, minScore, sort, page, limit);
     }
-    findOne(id) {
-        return this.resultsService.findOne(id);
-    }
-    update(id, updateResultDto) {
-        return this.resultsService.update(id, updateResultDto);
-    }
-    remove(id) {
-        return this.resultsService.remove(id);
+    async assignCompetitionRandomly(id) {
+        try {
+            await this.resultsService.assignCompetitionRandomly(id);
+            return { message: 'Successfully randomly assigned competition.' };
+        }
+        catch (error) {
+            return { message: 'Error when randomly assigning the competition.', error: error.message };
+        }
     }
 };
 exports.ResultsController = ResultsController;
 __decorate([
-    (0, common_1.Post)(),
-    __param(0, (0, common_1.Body)()),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [result_entity_1.Result]),
-    __metadata("design:returntype", void 0)
-], ResultsController.prototype, "create", null);
-__decorate([
-    (0, common_1.Get)(),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", []),
-    __metadata("design:returntype", void 0)
-], ResultsController.prototype, "findAll", null);
-__decorate([
-    (0, common_1.Get)(':id'),
-    __param(0, (0, common_1.Param)('id')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
-    __metadata("design:returntype", void 0)
-], ResultsController.prototype, "findOne", null);
-__decorate([
-    (0, common_1.Put)(':id'),
-    __param(0, (0, common_1.Param)('id')),
+    (0, common_1.Post)('allocationOfResults/:tournamentId'),
+    __param(0, (0, common_1.Param)('tournamentId')),
     __param(1, (0, common_1.Body)()),
     __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number, result_entity_1.Result]),
-    __metadata("design:returntype", void 0)
-], ResultsController.prototype, "update", null);
+    __metadata("design:paramtypes", [Number, Object]),
+    __metadata("design:returntype", Promise)
+], ResultsController.prototype, "createResult", null);
 __decorate([
-    (0, common_1.Delete)(':id'),
+    (0, common_1.Get)(':tournamentId'),
+    __param(0, (0, common_1.Param)('tournamentId')),
+    __param(1, (0, common_1.Query)('minScore')),
+    __param(2, (0, common_1.Query)('sort')),
+    __param(3, (0, common_1.Query)('page')),
+    __param(4, (0, common_1.Query)('limit')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [Number, Number, String, Number, Number]),
+    __metadata("design:returntype", Promise)
+], ResultsController.prototype, "getResults", null);
+__decorate([
+    (0, common_1.Post)(':id/assign-competition'),
     __param(0, (0, common_1.Param)('id')),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Number]),
-    __metadata("design:returntype", void 0)
-], ResultsController.prototype, "remove", null);
+    __metadata("design:returntype", Promise)
+], ResultsController.prototype, "assignCompetitionRandomly", null);
 exports.ResultsController = ResultsController = __decorate([
     (0, common_1.Controller)('results'),
     __metadata("design:paramtypes", [results_service_1.ResultsService])

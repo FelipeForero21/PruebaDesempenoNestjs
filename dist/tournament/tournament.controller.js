@@ -35,15 +35,6 @@ let TournamentsController = class TournamentsController {
     remove(id) {
         return this.tournamentsService.remove(id);
     }
-    async assignCompetitionRandomly(id) {
-        try {
-            await this.tournamentsService.assignCompetitionRandomly(id);
-            return { message: 'Successfully randomly assigned competition.' };
-        }
-        catch (error) {
-            return { message: 'Error when randomly assigning the competition.', error: error.message };
-        }
-    }
 };
 exports.TournamentsController = TournamentsController;
 __decorate([
@@ -81,13 +72,6 @@ __decorate([
     __metadata("design:paramtypes", [Number]),
     __metadata("design:returntype", void 0)
 ], TournamentsController.prototype, "remove", null);
-__decorate([
-    (0, common_1.Post)(':id/assign-competition'),
-    __param(0, (0, common_1.Param)('id')),
-    __metadata("design:type", Function),
-    __metadata("design:paramtypes", [Number]),
-    __metadata("design:returntype", Promise)
-], TournamentsController.prototype, "assignCompetitionRandomly", null);
 exports.TournamentsController = TournamentsController = __decorate([
     (0, common_1.Controller)('tournaments'),
     __metadata("design:paramtypes", [tournament_service_1.TournamentsService])

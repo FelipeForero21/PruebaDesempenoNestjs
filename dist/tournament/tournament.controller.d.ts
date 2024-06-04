@@ -10,11 +10,4 @@ export declare class TournamentsController {
     remove(id: number): Promise<{
         message: string;
     }>;
-    assignCompetitionRandomly(id: number): Promise<{
-        message: string;
-        error?: undefined;
-    } | {
-        message: string;
-        error: any;
-    }>;
 }

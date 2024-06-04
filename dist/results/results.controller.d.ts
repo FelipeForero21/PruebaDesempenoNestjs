@@ -1,11 +1,18 @@
-import { Result } from './entities/result.entity';
 import { ResultsService } from './results.service';
+import { Result } from './entities/result.entity';
 export declare class ResultsController {
     private readonly resultsService;
     constructor(resultsService: ResultsService);
-    create(createResultDto: Result): Promise<Result>;
-    findAll(): Promise<Result[]>;
-    findOne(id: number): Promise<Result>;
-    update(id: number, updateResultDto: Result): Promise<Result>;
-    remove(id: number): Promise<void>;
+    createResult(tournamentId: number, resultData: {
+        winnerScore: number;
+        loserScore: number;
+    }): Promise<Result>;
+    getResults(tournamentId: number, minScore: number, sort?: 'asc' | 'desc', page?: number, limit?: number): Promise<Result[]>;
+    assignCompetitionRandomly(id: number): Promise<{
+        message: string;
+        error?: undefined;
+    } | {
+        message: string;
+        error: any;
+    }>;
 }

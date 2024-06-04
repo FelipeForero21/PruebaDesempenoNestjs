@@ -17,14 +17,9 @@ const common_1 = require("@nestjs/common");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const tournament_entity_1 = require("./entities/tournament.entity");
-const players_service_1 = require("../players/players.service");
-const results_service_1 = require("../results/results.service");
-const result_entity_1 = require("../results/entities/result.entity");
 let TournamentsService = class TournamentsService {
-    constructor(tournamentsRepository, playersService, resultsService) {
+    constructor(tournamentsRepository) {
         this.tournamentsRepository = tournamentsRepository;
-        this.playersService = playersService;
-        this.resultsService = resultsService;
     }
     async create(tournamentData) {
         const tournament = this.tournamentsRepository.create(tournamentData);
@@ -45,50 +40,13 @@ let TournamentsService = class TournamentsService {
         if (result.affected === 0) {
             throw new Error('Tournament not found');
         }
-        return { message: 'Tournament deleted successfully' };
-    }
-    async assignCompetitionRandomly(tournamentId) {
-        const tournament = await this.findOne(tournamentId);
-        const players = await this.playersService.findAll();
-        const tournamentPlayers = tournament.players;
-        if (tournamentPlayers.length < 2) {
-            throw new Error('There are not enough players registered to assign the competition.');
-        }
-        const shuffledPlayers = this.shuffleArray(tournamentPlayers);
-        const matchups = this.generateMatchups(shuffledPlayers);
-        for (const matchup of matchups) {
-            const result = new result_entity_1.Result();
-            result.tournament = tournament;
-            result.winner = matchup[0];
-            result.loser = matchup[1];
-            result.winnerScore = Math.floor(Math.random() * 100) + 1;
-            result.loserScore = Math.floor(Math.random() * 100) + 1;
-            await this.resultsService.create(result);
-        }
-    }
-    shuffleArray(array) {
-        for (let i = array.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
-        }
-        return array;
-    }
-    generateMatchups(players) {
-        const matchups = [];
-        for (let i = 0; i < players.length; i += 2) {
-            if (i + 1 < players.length) {
-                matchups.push([players[i], players[i + 1]]);
-            }
-        }
-        return matchups;
+        return { message: 'To deleted successfully' };
     }
 };
 exports.TournamentsService = TournamentsService;
 exports.TournamentsService = TournamentsService = __decorate([
     (0, common_1.Injectable)(),
     __param(0, (0, typeorm_1.InjectRepository)(tournament_entity_1.Tournament)),
-    __metadata("design:paramtypes", [typeorm_2.Repository,
-        players_service_1.PlayersService,
-        results_service_1.ResultsService])
+    __metadata("design:paramtypes", [typeorm_2.Repository])
 ], TournamentsService);
 //# sourceMappingURL=tournament.service.js.map

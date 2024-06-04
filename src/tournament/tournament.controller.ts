@@ -31,14 +31,5 @@ export class TournamentsController {
     return this.tournamentsService.remove(id);
   }
 
-  @Post(':id/assign-competition')
-  async assignCompetitionRandomly(@Param('id') id: number) {
-    try {
-      await this.tournamentsService.assignCompetitionRandomly(id);
-      return { message: 'Successfully randomly assigned competition.' };
-    } catch (error) {
-      return { message: 'Error when randomly assigning the competition.', error: error.message };
-    }
-  }
 }
 
