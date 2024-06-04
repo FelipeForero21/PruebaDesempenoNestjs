@@ -26,7 +26,11 @@ let ResultsService = class ResultsService {
         this.playersService = playersService;
     }
     async findOne(id) {
-        return this.tournamentsRepository.findOne({ where: { id } });
+        const tournament = await this.tournamentsRepository.findOne({ where: { id }, relations: ['players'] });
+        if (!tournament) {
+            throw new Error('Tournament not found');
+        }
+        return tournament;
     }
     async create(resultData) {
         const result = this.resultsRepository.create(resultData);
@@ -34,8 +38,13 @@ let ResultsService = class ResultsService {
     }
     async assignCompetitionRandomly(tournamentId) {
         const tournament = await this.findOne(tournamentId);
-        const players = await this.playersService.findAll();
+        if (!tournament) {
+            throw new Error('Tournament not found');
+        }
         const tournamentPlayers = tournament.players;
+        if (!tournamentPlayers) {
+            throw new Error('Tournament players not found');
+        }
         if (tournamentPlayers.length < 2) {
             throw new Error('There are not enough registered players to assign the competition.');
         }
@@ -46,8 +55,23 @@ let ResultsService = class ResultsService {
             result.tournament = tournament;
             result.winner = matchup[0];
             result.loser = matchup[1];
-            await this.resultsRepository.create(result);
+            result.winnerScore = 0;
+            result.loserScore = 0;
+            await this.resultsRepository.save(result);
         }
+    }
+    async getResults(tournamentId, minScore, sort, page, limit) {
+        return await this.resultsRepository.find({
+            where: {
+                tournamentId,
+                winnerScore: (0, typeorm_2.MoreThan)(minScore)
+            },
+            order: {
+                winnerScore: sort.toUpperCase() === 'DESC' ? 'DESC' : 'ASC'
+            },
+            skip: page * limit,
+            take: limit
+        });
     }
     shuffleArray(array) {
         for (let i = array.length - 1; i > 0; i--) {
@@ -64,20 +88,6 @@ let ResultsService = class ResultsService {
             }
         }
         return matchups;
-    }
-    async getResults(tournamentId, minScore, sort, page, limit) {
-        const results = await this.resultsRepository.find({
-            where: {
-                tournamentId,
-                winnerScore: (0, typeorm_2.MoreThan)(minScore)
-            },
-            order: {
-                winnerScore: sort.toUpperCase() === 'DESC' ? 'DESC' : 'ASC'
-            },
-            skip: page * limit,
-            take: limit
-        });
-        return results;
     }
 };
 exports.ResultsService = ResultsService;

@@ -10,7 +10,7 @@ export declare class ResultsService {
     findOne(id: number): Promise<Tournament>;
     create(resultData: Result): Promise<Result>;
     assignCompetitionRandomly(tournamentId: number): Promise<void>;
+    getResults(tournamentId: number, minScore: number, sort: string, page: number, limit: number): Promise<Result[]>;
     private shuffleArray;
     private generateMatchups;
-    getResults(tournamentId: number, minScore: number, sort: string, page: number, limit: number): Promise<Result[]>;
 }

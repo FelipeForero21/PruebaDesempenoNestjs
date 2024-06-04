@@ -29,14 +29,4 @@ export class ResultsController {
     return this.resultsService.getResults(tournamentId, minScore, sort, page, limit);
   }
   
-
-  @Post(':id/assign-competition')
-  async assignCompetitionRandomly(@Param('id') id: number) {
-    try {
-      await this.resultsService.assignCompetitionRandomly(id);
-      return { message: 'Successfully randomly assigned competition.' };
-    } catch (error) {
-      return { message: 'Error when randomly assigning the competition.', error: error.message };
-    }
-  }
 }

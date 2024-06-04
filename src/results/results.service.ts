@@ -13,42 +13,62 @@ export class ResultsService {
     @InjectRepository(Result)
     private resultsRepository: Repository<Result>,
     private playersService: PlayersService,
-    
   ) {}
 
   async findOne(id: number): Promise<Tournament> {
-    return  this.tournamentsRepository.findOne({ where: { id } });
-
+    const tournament = await this.tournamentsRepository.findOne({ where: { id }, relations: ['players'] });
+    if (!tournament) {
+      throw new Error('Tournament not found');
+    }
+    return tournament;
   }
 
   async create(resultData: Result): Promise<Result> {
     const result = this.resultsRepository.create(resultData);
     return await this.resultsRepository.save(result);
   }
-  
 
   async assignCompetitionRandomly(tournamentId: number): Promise<void> {
     const tournament = await this.findOne(tournamentId);
-    const players = await this.playersService.findAll();
+    if (!tournament) {
+      throw new Error('Tournament not found');
+    }
 
     const tournamentPlayers = tournament.players;
-
+    if (!tournamentPlayers) {
+      throw new Error('Tournament players not found');
+    }
     if (tournamentPlayers.length < 2) {
       throw new Error('There are not enough registered players to assign the competition.');
     }
 
     const shuffledPlayers = this.shuffleArray(tournamentPlayers);
-
     const matchups = this.generateMatchups(shuffledPlayers);
 
     for (const matchup of matchups) {
       const result: Result = new Result();
-      result.tournament = tournament; 
+      result.tournament = tournament;
       result.winner = matchup[0];
-      result.loser = matchup[1]; 
+      result.loser = matchup[1];
+      result.winnerScore = 0; 
+      result.loserScore = 0;
 
-      await this.resultsRepository.create(result);
+      await this.resultsRepository.save(result);
     }
+  }
+
+  async getResults(tournamentId: number, minScore: number, sort: string, page: number, limit: number): Promise<Result[]> {
+    return await this.resultsRepository.find({
+      where: {
+        tournamentId,
+        winnerScore: MoreThan(minScore)
+      },
+      order: {
+        winnerScore: sort.toUpperCase() === 'DESC' ? 'DESC' : 'ASC'
+      },
+      skip: page * limit,
+      take: limit
+    });
   }
 
   private shuffleArray(array: any[]): any[] {
@@ -67,20 +87,5 @@ export class ResultsService {
       }
     }
     return matchups;
-  }
-
-  async getResults(tournamentId: number, minScore: number, sort: string, page: number, limit: number): Promise<Result[]> {
-    const results = await this.resultsRepository.find({
-      where: {
-        tournamentId,
-        winnerScore: MoreThan(minScore)
-      },
-      order: {
-        winnerScore: sort.toUpperCase() === 'DESC' ? 'DESC' : 'ASC'
-      },
-      skip: page * limit,
-      take: limit
-    });
-    return results;
   }
 }

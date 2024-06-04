@@ -36,6 +36,7 @@ let ResultsController = class ResultsController {
             return { message: 'Successfully randomly assigned competition.' };
         }
         catch (error) {
+            console.error(error);
             return { message: 'Error when randomly assigning the competition.', error: error.message };
         }
     }
